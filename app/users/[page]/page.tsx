@@ -7,15 +7,17 @@ import { UserTable } from "./user-table";
 import { UserColumns } from "./user-columns";
 import { Button } from "@/components/ui/button";
 import { UserProps } from "@/types/users";
+import { Loader2 } from "lucide-react";
 
 export default function UsersPage() {
   const router = useRouter();
   const params = useParams();
-  const page = params.page;
+  const page = params.page; // Get the page number from the URL params
 
   const [users, setUsers] = useState<UserProps[]>([]);
   const [loading, setLoading] = useState(false);
 
+  // Fetch users based on the current page number
   useEffect(() => {
     if (!page) return; // Ensure the page param is available
 
@@ -45,29 +47,47 @@ export default function UsersPage() {
     fetchUsers(Number(page));
   }, [page]);
 
+  // Navigate to the next page
   const handleNextPage = () => {
     router.push(`/users/${Number(page) + 1}`);
   };
 
+  // Navigate to the previous page
   const handlePrevPage = () => {
     router.push(`/users/${Number(page) - 1}`);
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold">Users - Page {page}</h1>
+    <div className="flex flex-col gap-6 p-6">
+      <div className="flex justify-between items-center my-4 ">
+        <h1 className="text-xl font-bold text-indigo-500">
+          Users Management Table
+        </h1>
+        <p>Page {page}</p>
+      </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <p className="flex gap-2 items-center mt-4 text-lg text-indigo-500 ">
+          {" "}
+          <Loader2 className="animate-spin" /> Loading...
+        </p>
       ) : (
         <UserTable columns={UserColumns} data={users} />
       )}
 
       <div className="mt-4 flex justify-between">
-        <Button onClick={handlePrevPage} disabled={Number(page) <= 1}>
+        <Button
+          className="bg-indigo-500"
+          onClick={handlePrevPage}
+          disabled={Number(page) <= 1}
+        >
           Previous
         </Button>
-        <Button onClick={handleNextPage} disabled={users.length < 5}>
+        <Button
+          className="bg-indigo-500"
+          onClick={handleNextPage}
+          disabled={users.length < 5}
+        >
           Next
         </Button>
       </div>
