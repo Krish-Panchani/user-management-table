@@ -21,6 +21,8 @@ import {
 } from "@tanstack/react-table";
 
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
 interface UserTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -49,25 +51,29 @@ export function UserTable<TData, TValue>({
   });
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 gap-2 relative">
         <Input
-          placeholder="Filter names..."
+          placeholder="Search by Names..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm border border-indigo-500 pl-10"
         />
+        <Search className="w-5 h-5 absolute left-2 text-indigo-500" />
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-lg border border-indigo-500">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow
+                key={headerGroup.id}
+                className="bg-indigo-500 hover:bg-indigo-500"
+              >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="text-white">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -86,6 +92,7 @@ export function UserTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="hover:bg-indigo-100 "
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
