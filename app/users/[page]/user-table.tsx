@@ -21,7 +21,6 @@ import {
 } from "@tanstack/react-table";
 
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 interface UserTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
